@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Order;
+use App\Models\OrderProduct;
 
 class CompanyController extends Controller
 {
@@ -39,23 +41,29 @@ class CompanyController extends Controller
 
     //Company orders
     public function companyOrders(){
+       
+        $companyId =  Auth::user()->id;
+        $orders = Order::where('company_id', $companyId)->get();
 
         // Redirect for correct dashboard if tries to manually access other dashboard
         if (Auth::user()->role !== 'company') {
             
-            return view('/'.Auth::user()->role.'/orders');
+            return view('/'.Auth::user()->role.'/orders',compact('orders'));
 
         }
 
-        return view('/company/orders');
+        return view('/company/orders',compact('orders'));
 
     }
 
     //Company Catalog
     public function companyCatalog(){
 
-        // Get all products
-        $products = Product::all();
+        // Get the ID of the currently authenticated company
+        $companyId = Auth::user()->id;
+
+        // Get all products related to the current company
+        $products = Product::where('company_id', $companyId)->get();
 
         // Redirect for correct dashboard if tries to manually access other dashboard
         if (Auth::user()->role !== 'company') {
@@ -68,7 +76,7 @@ class CompanyController extends Controller
 
     }
 
-     //Show page product
+    //Show page product
     public function showproduct($id){
 
         $product = Product::find($id);

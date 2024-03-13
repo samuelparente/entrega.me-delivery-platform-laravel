@@ -94,6 +94,9 @@ Route::middleware(['auth'])->group(function () {
     //Company Profile update
     Route::post('/editprofile', [MainController::class, 'updateProfile'])->name('company.profile');
 
+    //Show order details-common to all users but protected.must have be logged in
+    Route::get('orderdetails/{order}',[MainController::class,'showorderdetails']);
+
     //Messenger dashboard
     Route::get('/messenger/dashboard', [MainController::class, 'messengerDashboard'])->name('messenger.dashboard');
 

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\Order;
+use App\Models\OrderProduct;
 
 class MainController extends Controller
 {
@@ -187,6 +189,14 @@ class MainController extends Controller
         }
 
         return view('/messenger/dashboard');
+
+    }
+
+    //Show order detaisl-common page to all users
+    public function showorderdetails($id){
+
+        $order = Order::find($id);
+        return view('orderdetails',compact('order'));
 
     }
     
